@@ -1,8 +1,8 @@
 import torch
 from torch.utils.data import DataLoader, TensorDataset, random_split
 
-def getDataloaders(data, label, split_list=None, batch_size=1, shuffle=False):
 
+def getDataloaders(data, label, split_list=None, batch_size=1, shuffle=False):
     data = torch.from_numpy(data).float()
     label = torch.from_numpy(label).float()
     dataset = TensorDataset(data, label)

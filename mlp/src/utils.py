@@ -1,6 +1,7 @@
 import numpy as np
 import torch
 
+
 def comptute_accuracy(output, label, gpu=True, grad=False):
     if gpu:
         output = output.cpu()

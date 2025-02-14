@@ -29,29 +29,39 @@ params.print_options()
 # dataloader
 train_data = np.load("data/train_data.npy")
 train_label = np.load("data/train_label.npy")
-train_loader, valid_loader = getDataloaders(train_data, train_label, split_list=[600, 200], batch_size=params.batch_size, shuffle=True)
+train_loader, valid_loader = getDataloaders(
+    train_data,
+    train_label,
+    split_list=[600, 200],
+    batch_size=params.batch_size,
+    shuffle=True,
+)
 
 # define model, loss, and optimizer
 model = MlpModel().to(device)
 criterion = torch.nn.MSELoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=params.learn_rate)    
+optimizer = torch.optim.Adam(model.parameters(), lr=params.learn_rate)
 
 # train model
 early_step = 0
 min_valid_loss = 1e10
 logger = Logger(params.num_epochs)
 
-for epoch in range(params.num_epochs):    
-    train_acc, valid_acc = 0.0, 0.0 
+for epoch in range(params.num_epochs):
+    train_acc, valid_acc = 0.0, 0.0
     train_loss, valid_loss = 0.0, 0.0
     # train
-    for data, label in tqdm(train_loader, desc="Train [{:2d}/{}]".format(epoch+1, params.num_epochs), unit="batch"):
+    for data, label in tqdm(
+        train_loader,
+        desc="Train [{:2d}/{}]".format(epoch + 1, params.num_epochs),
+        unit="batch",
+    ):
         # use CUDA if available
         data = data.to(device)
         label = label.to(device)
         # compute output and loss
         output = model(data).squeeze()
-        loss = criterion(output, label) 
+        loss = criterion(output, label)
         # update model weights
         optimizer.zero_grad()
         loss.backward()
@@ -62,13 +72,17 @@ for epoch in range(params.num_epochs):
     # validation
     model.eval()
     with torch.no_grad():
-        for data, label in tqdm(valid_loader, desc="Valid [{:2d}/{}]".format(epoch+1, params.num_epochs), unit="batch"):
+        for data, label in tqdm(
+            valid_loader,
+            desc="Valid [{:2d}/{}]".format(epoch + 1, params.num_epochs),
+            unit="batch",
+        ):
             # use CUDA if available
             data = data.to(device)
             label = label.to(device)
             # compute output and loss
-            output = model(data).squeeze() 
-            loss = criterion(output, label) 
+            output = model(data).squeeze()
+            loss = criterion(output, label)
             # update validation loss and accuracy
             valid_loss += loss.item()
             valid_acc += comptute_accuracy(output, label)
@@ -77,11 +91,11 @@ for epoch in range(params.num_epochs):
     logger.write_acc(train_acc / len(train_loader), valid_acc / len(valid_loader))
 
     # early stop
-    if min_valid_loss > valid_loss: 
+    if min_valid_loss > valid_loss:
         early_step = 0
-        min_valid_loss = valid_loss 
-        os.makedirs("checkpoints", exist_ok=True)   
-        torch.save(model.state_dict(),"checkpoints/model.pth")
+        min_valid_loss = valid_loss
+        os.makedirs("checkpoints", exist_ok=True)
+        torch.save(model.state_dict(), "checkpoints/model.pth")
     else:
         early_step += 1
         if early_step >= params.early_stop:
@@ -89,6 +103,6 @@ for epoch in range(params.num_epochs):
             print("No improvements for {} consecutive epochs".format(params.early_stop))
             break
 
-# plot 
-os.makedirs("docs", exist_ok=True) 
+# plot
+os.makedirs("docs", exist_ok=True)
 plot_loss_accuracy(logger, file_path="docs/training_loss_accuracy.png")

@@ -27,14 +27,14 @@ test_loader = getDataloaders(test_data, test_label, batch_size=params.batch_size
 
 model = MlpModel().to(device)
 model.load_state_dict(torch.load("checkpoints/model.pth"))
-model.eval()  
+model.eval()
 
 test_acc = 0.0
 with torch.no_grad():
     for data, label in tqdm(test_loader, desc="Test", unit="batch"):
         data = data.to(device)
         label = label.to(device)
-        output = model(data).squeeze() 
+        output = model(data).squeeze()
         test_acc += comptute_accuracy(output, label)
     test_acc /= len(test_loader)
 
