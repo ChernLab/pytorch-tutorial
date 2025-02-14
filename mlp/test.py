@@ -7,9 +7,7 @@ from tqdm import tqdm
 from src.parameters import Params
 from src.dataloader import getDataloaders
 from src.model import MlpModel
-from src.logger import Logger
 from src.utils import comptute_accuracy
-from src.visualize import plot_loss_accuracy
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 if device.type == "cuda":
@@ -21,8 +19,8 @@ else:
 params = Params()
 params.batch_size = 8
 
-test_data = np.load("data/train_data.npy")
-test_label = np.load("data/train_label.npy")
+test_data = np.load("data/test_data.npy")
+test_label = np.load("data/test_label.npy")
 test_loader = getDataloaders(test_data, test_label, batch_size=params.batch_size)
 
 model = MlpModel().to(device)
