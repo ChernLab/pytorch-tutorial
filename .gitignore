@@ -3,6 +3,7 @@ __pycache__/
 
 # IDEs
 .vscode
+.ipynb_checkpoints
 
 # environments
 .venv
