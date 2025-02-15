@@ -5,10 +5,10 @@ import torch
 from tqdm import tqdm
 
 from src.parameters import Params
-from src.dataloader import getDataloaders
+from src.dataloader import getDataloader
 from src.model import MlpModel
 from src.logger import Logger
-from src.utils import comptute_accuracy
+from src.utils import compute_accuracy
 from src.visualize import plot_loss_accuracy
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -29,7 +29,7 @@ params.print_options()
 # dataloader
 train_data = np.load("data/train_data.npy")
 train_label = np.load("data/train_label.npy")
-train_loader, valid_loader = getDataloaders(
+train_loader, valid_loader = getDataloader(
     train_data,
     train_label,
     split_list=[600, 200],
@@ -68,7 +68,7 @@ for epoch in range(params.num_epochs):
         optimizer.step()
         # update train loss and accuracy
         train_loss += loss.item()
-        train_acc += comptute_accuracy(output, label, grad=True)
+        train_acc += compute_accuracy(output, label, grad=True)
     # validation
     model.eval()
     with torch.no_grad():
@@ -85,7 +85,7 @@ for epoch in range(params.num_epochs):
             loss = criterion(output, label)
             # update validation loss and accuracy
             valid_loss += loss.item()
-            valid_acc += comptute_accuracy(output, label)
+            valid_acc += compute_accuracy(output, label)
 
     logger.write_loss(train_loss / len(train_loader), valid_loss / len(valid_loader))
     logger.write_acc(train_acc / len(train_loader), valid_acc / len(valid_loader))

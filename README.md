@@ -1,10 +1,8 @@
 # Pytorch tutorial
 
 ```shell
-# conda create -n pytorch-tutorial python=3.11
-# conda activate pytorch tutorial
-# pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
-# pip install numpy scipy scikit-learn matplotlib seaborn tqdm ipykernel
+# conda env create -f environment.yml
+# conda activate pytorch-tutorial
 # python -m ipykernel install --user --name "pytorch-tutorial"
 
 conda activate pytorch-tutorial

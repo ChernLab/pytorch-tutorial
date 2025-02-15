@@ -5,9 +5,9 @@ import torch
 from tqdm import tqdm
 
 from src.parameters import Params
-from src.dataloader import getDataloaders
+from src.dataloader import getDataloader
 from src.model import MlpModel
-from src.utils import comptute_accuracy
+from src.utils import compute_accuracy
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 if device.type == "cuda":
@@ -21,7 +21,7 @@ params.batch_size = 8
 
 test_data = np.load("data/test_data.npy")
 test_label = np.load("data/test_label.npy")
-test_loader = getDataloaders(test_data, test_label, batch_size=params.batch_size)
+test_loader = getDataloader(test_data, test_label, batch_size=params.batch_size)
 
 model = MlpModel().to(device)
 model.load_state_dict(torch.load("checkpoints/model.pth"))
@@ -33,7 +33,7 @@ with torch.no_grad():
         data = data.to(device)
         label = label.to(device)
         output = model(data).squeeze()
-        test_acc += comptute_accuracy(output, label)
+        test_acc += compute_accuracy(output, label)
     test_acc /= len(test_loader)
 
 print("\nTest Accuracy {:.2f}%".format(100 * test_acc))
