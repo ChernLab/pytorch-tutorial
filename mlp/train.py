@@ -5,7 +5,7 @@ import torch
 from tqdm import tqdm
 
 from src.parameters import Params
-from src.dataloader import getDataloaders
+from src.dataloader import getDataloader
 from src.model import MlpModel
 from src.logger import Logger
 from src.utils import compute_accuracy
@@ -29,7 +29,7 @@ params.print_options()
 # dataloader
 train_data = np.load("data/train_data.npy")
 train_label = np.load("data/train_label.npy")
-train_loader, valid_loader = getDataloaders(
+train_loader, valid_loader = getDataloader(
     train_data,
     train_label,
     split_list=[600, 200],
