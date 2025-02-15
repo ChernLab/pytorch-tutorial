@@ -7,7 +7,7 @@ from tqdm import tqdm
 from src.parameters import Params
 from src.dataloader import getDataloaders
 from src.model import MlpModel
-from src.utils import comptute_accuracy
+from src.utils import compute_accuracy
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 if device.type == "cuda":
@@ -33,7 +33,7 @@ with torch.no_grad():
         data = data.to(device)
         label = label.to(device)
         output = model(data).squeeze()
-        test_acc += comptute_accuracy(output, label)
+        test_acc += compute_accuracy(output, label)
     test_acc /= len(test_loader)
 
 print("\nTest Accuracy {:.2f}%".format(100 * test_acc))
