@@ -3,7 +3,7 @@ class Params:
         self.num_epochs = 1000
         self.early_stop = 10
         self.batch_size = 128
-        self.learn_rate = 0.0005
+        self.learn_rate = 0.0001
 
     def print_options(self):
         print("Training options:")

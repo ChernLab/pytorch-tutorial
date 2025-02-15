@@ -23,7 +23,7 @@ params = Params()
 params.num_epochs = 100
 params.early_stop = 10
 params.batch_size = 128
-params.learn_rate = 0.0005
+params.learn_rate = 0.0001
 params.print_options()
 
 # dataloader
